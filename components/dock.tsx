@@ -54,18 +54,21 @@ const data = [
   },
 ];
 
-export function AppleStyleDock() {
+export function AppleStyleDock({ onScan }: { onScan: () => void }) {
   return (
     <div className="absolute bottom-2 left-1/2 max-w-full -translate-x-1/2">
       <Dock className="items-end pb-3">
         {data.map((item, idx) => (
-          <DockItem
+          <div
             key={idx}
             className="aspect-square rounded-full bg-gray-200 dark:bg-neutral-800"
+            onClick={item.title === "Scan" ? onScan : undefined}
           >
-            <DockLabel>{item.title}</DockLabel>
-            <DockIcon>{item.icon}</DockIcon>
-          </DockItem>
+            <DockItem>
+              <DockLabel>{item.title}</DockLabel>
+              <DockIcon>{item.icon}</DockIcon>
+            </DockItem>
+          </div>
         ))}
       </Dock>
     </div>

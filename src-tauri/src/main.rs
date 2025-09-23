@@ -1,6 +1,18 @@
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![cfg_attr(
+  all(not(debug_assertions), target_os = "windows"),
+  windows_subsystem = "windows"
+)]
+
+use tauri::Manager;
+
+#[tauri::command]
+fn hello_world() -> String {
+  "Hello World from Tauri!".into()
+}
 
 fn main() {
-  app_lib::run();
+  tauri::Builder::default()
+      .invoke_handler(tauri::generate_handler![hello_world])
+      .run(tauri::generate_context!())
+      .expect("error while running Tauri app");
 }
