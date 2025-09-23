@@ -1,4 +1,6 @@
 import { AppSidebar } from "@/components/app-sidebar";
+import { AppleStyleDock } from "@/components/dock";
+import { ServerManagementTable } from "@/components/server-management-table";
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
 import {
   Breadcrumb,
@@ -30,9 +32,7 @@ export default function Page() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Wifi-Scnr
-                  </BreadcrumbLink>
+                  <BreadcrumbLink href="#">Wifi-Scnr</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
@@ -41,15 +41,16 @@ export default function Page() {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-          <AnimatedThemeToggler />
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-            <div className="bg-muted/50 aspect-video rounded-xl" />
+
+          {/* Push this to the far right */}
+          <div className="ml-auto px-4">
+            <AnimatedThemeToggler />
           </div>
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+        </header>
+
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <ServerManagementTable title="Active WiFi" />
+        <AppleStyleDock />
         </div>
       </SidebarInset>
     </SidebarProvider>
