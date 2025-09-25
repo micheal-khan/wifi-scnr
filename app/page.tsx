@@ -20,6 +20,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ServerManagementTable } from "@/components/server-management-table";
+import { AppleStyleDock } from "@/components/docker";
 
 export default function Home() {
   const [msg, setMsg] = useState("");
@@ -37,7 +38,7 @@ export default function Home() {
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar variant="inset" collapsible="icon" />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex items-center gap-2 px-4">
@@ -66,9 +67,9 @@ export default function Home() {
         </header>
 
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <Button onClick={fetchMessage}>Click me daddy</Button>
           {msg && <p className="text-lg font-semibold">{msg}</p>}
           <ServerManagementTable title="Active WiFi" />
+          <AppleStyleDock onButtonClick={fetchMessage} />
         </div>
       </SidebarInset>
     </SidebarProvider>
