@@ -282,7 +282,7 @@ export function ServerManagementTable({
   };
 
   return (
-    <div className={`w-full max-w-7xl mx-auto p-6 ${className}`}>
+    <div className={`w-full mx-auto ${className}`}>
       <div className="relative border border-border/30 rounded-2xl p-6 bg-card">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
