@@ -1,29 +1,79 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import { useState } from "react";
+import { invoke } from "@tauri-apps/api/core";
+import { AppSidebar } from "@/components/app-sidebar";
+import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
-export default function Page() {
-  const [message, setMessage] = useState<string>("");
+export default function Home() {
+  const [msg, setMsg] = useState("");
 
-  useEffect(() => {
-    const fetchHello = async () => {
-      try {
-        const response = await invoke<string>("hello_world");
-        setMessage(response);
-      } catch (err) {
-        console.error("Error calling Tauri:", err);
-        setMessage("Failed to fetch from Tauri");
-      }
-    };
+  const fetchMessage = async () => {
+    try {
+      const response = await invoke<string>("get_message");
+      console.log("Backend response:", response);
 
-    fetchHello();
-  }, []);
+      setMsg(response);
+    } catch (error) {
+      console.error("Backend call failed:", error);
+    }
+  };
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">Tauri + Next.js Demo</h1>
-      <p className="mt-4 text-lg">{message || "Loading..."}</p>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Building Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+
+          {/* ml-auto pushes it to the far right */}
+          <AnimatedThemeToggler className="ml-auto px-4" />
+        </header>
+
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <Button onClick={fetchMessage}>Click me daddy</Button>
+            <div className="bg-muted/50 aspect-video rounded-xl">
+              {msg && <p className="text-lg font-semibold">{msg}</p>}
+            </div>
+          </div>
+          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
